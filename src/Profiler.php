@@ -96,7 +96,7 @@ class Profiler implements ProfilerInterface, \IteratorAggregate, \Countable
 	 */
 	public function __construct($name, ProfilerRendererInterface $renderer = null, array $points = [], $memoryRealUsage = false)
 	{
-		$this->name = $name;
+		$this->name     = $name;
 		$this->renderer = $renderer ? : new DefaultRenderer;
 
 		$this->setPoints($points);
@@ -186,13 +186,13 @@ class Profiler implements ProfilerInterface, \IteratorAggregate, \Countable
 		$this->memoryPeakBytes = memory_get_peak_usage($this->memoryRealUsage);
 
 		// Get the current timestamp and allocated memory amount.
-		$timeStamp = microtime(true);
+		$timeStamp   = microtime(true);
 		$memoryBytes = memory_get_usage($this->memoryRealUsage);
 
 		// If this is the first point.
 		if (empty($this->points))
 		{
-			$this->startTimeStamp = $timeStamp;
+			$this->startTimeStamp   = $timeStamp;
 			$this->startMemoryBytes = $memoryBytes;
 		}
 
@@ -283,10 +283,10 @@ class Profiler implements ProfilerInterface, \IteratorAggregate, \Countable
 			);
 		}
 
-		$indexFirst = $this->lookup[$first];
+		$indexFirst  = $this->lookup[$first];
 		$indexSecond = $this->lookup[$second];
 
-		$firstPoint = $this->points[$indexFirst];
+		$firstPoint  = $this->points[$indexFirst];
 		$secondPoint = $this->points[$indexSecond];
 
 		return abs($secondPoint->getTime() - $firstPoint->getTime());
@@ -327,10 +327,10 @@ class Profiler implements ProfilerInterface, \IteratorAggregate, \Countable
 			);
 		}
 
-		$indexFirst = $this->lookup[$first];
+		$indexFirst  = $this->lookup[$first];
 		$indexSecond = $this->lookup[$second];
 
-		$firstPoint = $this->points[$indexFirst];
+		$firstPoint  = $this->points[$indexFirst];
 		$secondPoint = $this->points[$indexSecond];
 
 		return abs($secondPoint->getMemoryBytes() - $firstPoint->getMemoryBytes());
