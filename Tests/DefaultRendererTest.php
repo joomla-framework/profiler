@@ -27,7 +27,7 @@ class DefaultRendererTest extends TestCase
 	 *
 	 * @return  void
 	 */
-	protected function setUp()
+	protected function setUp(): void
 	{
 		parent::setUp();
 
@@ -46,7 +46,7 @@ class DefaultRendererTest extends TestCase
 		$fourth = new ProfilePoint('fourth', 3, 1572864);
 
 		// Create a profiler and inject the points.
-		$profiler = new Profiler('test', null, array($first, $second, $third, $fourth));
+		$profiler = new Profiler('test', null, [$first, $second, $third, $fourth]);
 
 		$expectedString = '<code>test 0.000 seconds (+0.000); 0.00 MB (0.000) - first</code><br />';
 		$expectedString .= '<code>test 1.500 seconds (+1.500); 1.00 MB (+1.000) - second</code><br />';

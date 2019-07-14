@@ -6,6 +6,7 @@
 
 namespace Joomla\Profiler\Tests;
 
+use Joomla\Profiler\ProfilerRendererInterface;
 use Joomla\Profiler\Renderer\DefaultRenderer;
 use Joomla\Profiler\ProfilePoint;
 use Joomla\Profiler\Profiler;
@@ -27,7 +28,7 @@ class ProfilerTest extends TestCase
 	 *
 	 * @return  void
 	 */
-	protected function setUp()
+	protected function setUp(): void
 	{
 		parent::setUp();
 
@@ -40,7 +41,7 @@ class ProfilerTest extends TestCase
 	public function testTheProfilerIsInstantiatedCorrectly()
 	{
 		$this->assertAttributeSame('test', 'name', $this->instance);
-		$this->assertAttributeInstanceOf('\Joomla\Profiler\Renderer\DefaultRenderer', 'renderer', $this->instance);
+		$this->assertAttributeInstanceOf(DefaultRenderer::class, 'renderer', $this->instance);
 		$this->assertAttributeEmpty('points', $this->instance);
 		$this->assertAttributeSame(false, 'memoryRealUsage', $this->instance);
 	}
@@ -71,7 +72,7 @@ class ProfilerTest extends TestCase
 	public function testTheProfilerRegistersInjectedPointsCorrectly()
 	{
 		$point    = new ProfilePoint('start');
-		$profiler = new Profiler('bar', null, array($point));
+		$profiler = new Profiler('bar', null, [$point]);
 
 		$this->assertTrue($profiler->hasPoint('start'));
 	}
@@ -79,27 +80,27 @@ class ProfilerTest extends TestCase
 	/**
 	 * @covers  \Joomla\Profiler\Profiler::setPoints
 	 * @uses    \Joomla\Profiler\Profiler::__construct
-	 *
-	 * @expectedException  \InvalidArgumentException
 	 */
 	public function testTheProfilerCannotRegisterMultipleInjectedPointsWithTheSameName()
 	{
+		$this->expectException(\InvalidArgumentException::class);
+
 		$point1   = new ProfilePoint('start');
 		$point2   = new ProfilePoint('start');
-		$profiler = new Profiler('bar', null, array($point1, $point2));
+		$profiler = new Profiler('bar', null, [$point1, $point2]);
 	}
 
 	/**
 	 * @covers  \Joomla\Profiler\Profiler::setPoints
 	 * @uses    \Joomla\Profiler\Profiler::__construct
-	 *
-	 * @expectedException  \InvalidArgumentException
 	 */
 	public function testTheProfilerCannotRegisterInjectedPointsNotImplementingThePointInterface()
 	{
+		$this->expectException(\InvalidArgumentException::class);
+
 		$point1   = new ProfilePoint('start');
 		$point2   = new \stdClass;
-		$profiler = new Profiler('bar', null, array($point1, $point2));
+		$profiler = new Profiler('bar', null, [$point1, $point2]);
 	}
 
 	/**
@@ -148,11 +149,11 @@ class ProfilerTest extends TestCase
 
 	/**
 	 * @covers  \Joomla\Profiler\Profiler::mark
-	 *
-	 * @expectedException  \LogicException
 	 */
 	public function testTheProfilerCannotMarkMultiplePointsWithTheSameName()
 	{
+		$this->expectException(\LogicException::class);
+
 		$this->instance->mark('test');
 		$this->instance->mark('test');
 	}
@@ -195,7 +196,7 @@ class ProfilerTest extends TestCase
 		$first  = new ProfilePoint('start');
 		$second = new ProfilePoint('stop', 1.5);
 
-		$profiler = new Profiler('test', null, array($first, $second));
+		$profiler = new Profiler('test', null, [$first, $second]);
 
 		$this->assertSame(1.5, $profiler->getTimeBetween('start', 'stop'));
 		$this->assertSame(1.5, $profiler->getTimeBetween('stop', 'start'));
@@ -204,13 +205,13 @@ class ProfilerTest extends TestCase
 	/**
 	 * @covers  \Joomla\Profiler\Profiler::getTimeBetween
 	 * @uses    \Joomla\Profiler\Profiler::__construct
-	 *
-	 * @expectedException \LogicException
 	 */
 	public function testTheProfilerCannotMeasureTimeBetweenTwoPointsIfTheSecondPointDoesNotExist()
 	{
+		$this->expectException(\LogicException::class);
+
 		$first    = new ProfilePoint('start');
-		$profiler = new Profiler('test', null, array($first));
+		$profiler = new Profiler('test', null, [$first]);
 
 		$profiler->getTimeBetween('start', 'bar');
 	}
@@ -218,13 +219,13 @@ class ProfilerTest extends TestCase
 	/**
 	 * @covers  \Joomla\Profiler\Profiler::getTimeBetween
 	 * @uses    \Joomla\Profiler\Profiler::__construct
-	 *
-	 * @expectedException \LogicException
 	 */
 	public function testTheProfilerCannotMeasureTimeBetweenTwoPointsIfTheFirstPointDoesNotExist()
 	{
+		$this->expectException(\LogicException::class);
+
 		$first    = new ProfilePoint('start');
-		$profiler = new Profiler('test', null, array($first));
+		$profiler = new Profiler('test', null, [$first]);
 
 		$profiler->getTimeBetween('foo', 'start');
 	}
@@ -238,7 +239,7 @@ class ProfilerTest extends TestCase
 		$first  = new ProfilePoint('start');
 		$second = new ProfilePoint('stop', 0, 1000);
 
-		$profiler = new Profiler('test', null, array($first, $second));
+		$profiler = new Profiler('test', null, [$first, $second]);
 
 		$this->assertSame(1000, $profiler->getMemoryBytesBetween('start', 'stop'));
 		$this->assertSame(1000, $profiler->getMemoryBytesBetween('stop', 'start'));
@@ -247,13 +248,13 @@ class ProfilerTest extends TestCase
 	/**
 	 * @covers  \Joomla\Profiler\Profiler::getMemoryBytesBetween
 	 * @uses    \Joomla\Profiler\Profiler::__construct
-	 *
-	 * @expectedException \LogicException
 	 */
 	public function testTheProfilerCannotMeasureMemoryBetweenTwoPointsIfTheSecondPointDoesNotExist()
 	{
+		$this->expectException(\LogicException::class);
+
 		$first    = new ProfilePoint('start');
-		$profiler = new Profiler('test', null, array($first));
+		$profiler = new Profiler('test', null, [$first]);
 
 		$profiler->getMemoryBytesBetween('start', 'bar');
 	}
@@ -261,13 +262,13 @@ class ProfilerTest extends TestCase
 	/**
 	 * @covers  \Joomla\Profiler\Profiler::getMemoryBytesBetween
 	 * @uses    \Joomla\Profiler\Profiler::__construct
-	 *
-	 * @expectedException \LogicException
 	 */
 	public function testTheProfilerCannotMeasureMemoryBetweenTwoPointsIfTheFirstPointDoesNotExist()
 	{
+		$this->expectException(\LogicException::class);
+
 		$first    = new ProfilePoint('start');
-		$profiler = new Profiler('test', null, array($first));
+		$profiler = new Profiler('test', null, [$first]);
 
 		$profiler->getMemoryBytesBetween('foo', 'start');
 	}
@@ -305,7 +306,7 @@ class ProfilerTest extends TestCase
 	 */
 	public function testTheProfilerReturnsTheRenderer()
 	{
-		$this->assertInstanceOf('\Joomla\Profiler\Renderer\DefaultRenderer', $this->instance->getRenderer());
+		$this->assertInstanceOf(DefaultRenderer::class, $this->instance->getRenderer());
 	}
 
 	/**
@@ -314,7 +315,7 @@ class ProfilerTest extends TestCase
 	 */
 	public function testTheProfilerRendersItsData()
 	{
-		$mockedRenderer = $this->getMockBuilder('\Joomla\Profiler\ProfilerRendererInterface')->getMock();
+		$mockedRenderer = $this->createMock(ProfilerRendererInterface::class);
 		$mockedRenderer->expects($this->once())
 			->method('render')
 			->with($this->instance);
@@ -330,7 +331,7 @@ class ProfilerTest extends TestCase
 	 */
 	public function testTheProfilerCanBeCastToAString()
 	{
-		$mockedRenderer = $this->getMockBuilder('\Joomla\Profiler\ProfilerRendererInterface')->getMock();
+		$mockedRenderer = $this->createMock(ProfilerRendererInterface::class);
 		$mockedRenderer->expects($this->once())
 			->method('render')
 			->with($this->instance)
@@ -355,7 +356,7 @@ class ProfilerTest extends TestCase
 		// Create a profiler and inject the points.
 		$profiler = new Profiler('test', null, $points);
 
-		$this->assertInstanceOf('\ArrayIterator', $profiler->getIterator());
+		$this->assertInstanceOf(\ArrayIterator::class, $profiler->getIterator());
 	}
 
 	/**
@@ -389,11 +390,11 @@ class ProfilerTest extends TestCase
 
 	/**
 	 * @covers  \Joomla\Profiler\Profiler::setStart
-	 *
-	 * @expectedException  \RuntimeException
 	 */
 	public function testTheProfilerStartTimeAndMemoryCannotBeChangedIfAPointHasBeenMarked()
 	{
+		$this->expectException(\RuntimeException::class);
+
 		$time   = microtime(true);
 		$memory = memory_get_usage(false);
 
