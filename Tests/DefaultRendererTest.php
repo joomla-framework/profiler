@@ -35,7 +35,9 @@ class DefaultRendererTest extends TestCase
 	}
 
 	/**
-	 * @covers  \Joomla\Profiler\Renderer\DefaultRenderer::render
+	 * @covers  Joomla\Profiler\Renderer\DefaultRenderer
+	 * @uses    Joomla\Profiler\ProfilePoint
+	 * @uses    Joomla\Profiler\Profiler
 	 */
 	public function testTheProfilePointsAreRenderedCorrectly()
 	{
@@ -57,7 +59,8 @@ class DefaultRendererTest extends TestCase
 	}
 
 	/**
-	 * @covers  \Joomla\Profiler\Renderer\DefaultRenderer::render
+	 * @covers  Joomla\Profiler\Renderer\DefaultRenderer
+	 * @uses    Joomla\Profiler\Profiler
 	 */
 	public function testTheRendererHandlesAnEmptyDataSet()
 	{
