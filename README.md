@@ -140,12 +140,12 @@ End: 0.000016 seconds.
 
 ## Installation via Composer
 
-Add `"joomla/profiler": "2.0.*@dev"` to the require block in your composer.json and then run `composer install`.
+Add `"joomla/profiler": "~2.0"` to the require block in your composer.json and then run `composer install`.
 
 ```json
 {
 	"require": {
-		"joomla/profiler": "2.0.*@dev"
+		"joomla/profiler": "~2.0"
 	}
 }
 ```
@@ -153,5 +153,5 @@ Add `"joomla/profiler": "2.0.*@dev"` to the require block in your composer.json 
 Alternatively, you can simply run the following from the command line:
 
 ```sh
-composer require joomla/profiler "2.0.*@dev"
+composer require joomla/profiler "~2.0"
 ```
