@@ -15,14 +15,14 @@ namespace Joomla\Profiler;
  */
 interface ProfilerRendererInterface
 {
-	/**
-	 * Render the profiler.
-	 *
-	 * @param   ProfilerInterface  $profiler  The profiler to render.
-	 *
-	 * @return  string  The rendered profiler.
-	 *
-	 * @since   1.0
-	 */
-	public function render(ProfilerInterface $profiler);
+    /**
+     * Render the profiler.
+     *
+     * @param   ProfilerInterface  $profiler  The profiler to render.
+     *
+     * @return  string  The rendered profiler.
+     *
+     * @since   1.0
+     */
+    public function render(ProfilerInterface $profiler);
 }

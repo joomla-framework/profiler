@@ -18,45 +18,44 @@ use Joomla\Profiler\ProfilerRendererInterface;
  */
 class DefaultRenderer implements ProfilerRendererInterface
 {
-	/**
-	 * Render the profiler.
-	 *
-	 * @param   ProfilerInterface  $profiler  The profiler to render.
-	 *
-	 * @return  string  The rendered profiler.
-	 *
-	 * @since   1.0
-	 */
-	public function render(ProfilerInterface $profiler)
-	{
-		$render = '';
+    /**
+     * Render the profiler.
+     *
+     * @param   ProfilerInterface  $profiler  The profiler to render.
+     *
+     * @return  string  The rendered profiler.
+     *
+     * @since   1.0
+     */
+    public function render(ProfilerInterface $profiler)
+    {
+        $render = '';
 
-		/** @var \Joomla\Profiler\ProfilePointInterface $lastPoint */
-		$lastPoint = null;
+        /** @var \Joomla\Profiler\ProfilePointInterface $lastPoint */
+        $lastPoint = null;
 
-		$points = $profiler->getPoints();
+        $points = $profiler->getPoints();
 
-		foreach ($points as $point)
-		{
-			$previousTime = $lastPoint ? $lastPoint->getTime() : 0.0;
-			$previousMem  = $lastPoint ? $lastPoint->getMemoryMegaBytes() : 0;
+        foreach ($points as $point) {
+            $previousTime = $lastPoint ? $lastPoint->getTime() : 0.0;
+            $previousMem  = $lastPoint ? $lastPoint->getMemoryMegaBytes() : 0;
 
-			$render .= sprintf(
-				'<code>%s %.3f seconds (+%.3f); %0.2f MB (%s%0.3f) - %s</code>',
-				$profiler->getName(),
-				$point->getTime(),
-				$point->getTime() - $previousTime,
-				$point->getMemoryMegaBytes(),
-				($point->getMemoryMegaBytes() > $previousMem) ? '+' : '',
-				$point->getMemoryMegaBytes() - $previousMem,
-				$point->getName()
-			);
+            $render .= sprintf(
+                '<code>%s %.3f seconds (+%.3f); %0.2f MB (%s%0.3f) - %s</code>',
+                $profiler->getName(),
+                $point->getTime(),
+                $point->getTime() - $previousTime,
+                $point->getMemoryMegaBytes(),
+                ($point->getMemoryMegaBytes() > $previousMem) ? '+' : '',
+                $point->getMemoryMegaBytes() - $previousMem,
+                $point->getName()
+            );
 
-			$render .= '<br />';
+            $render .= '<br />';
 
-			$lastPoint = $point;
-		}
+            $lastPoint = $point;
+        }
 
-		return $render;
-	}
+        return $render;
+    }
 }

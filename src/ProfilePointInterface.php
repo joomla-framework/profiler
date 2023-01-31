@@ -18,39 +18,39 @@ namespace Joomla\Profiler;
  */
 interface ProfilePointInterface
 {
-	/**
-	 * Get the name of this profile point.
-	 *
-	 * @return  string  The name of this profile point.
-	 *
-	 * @since   1.0
-	 */
-	public function getName();
+    /**
+     * Get the name of this profile point.
+     *
+     * @return  string  The name of this profile point.
+     *
+     * @since   1.0
+     */
+    public function getName();
 
-	/**
-	 * Get the elapsed time in seconds since the first point in the profiler it belongs to was marked.
-	 *
-	 * @return  float  The time in seconds.
-	 *
-	 * @since   1.0
-	 */
-	public function getTime();
+    /**
+     * Get the elapsed time in seconds since the first point in the profiler it belongs to was marked.
+     *
+     * @return  float  The time in seconds.
+     *
+     * @since   1.0
+     */
+    public function getTime();
 
-	/**
-	 * Get the allocated amount of memory in bytes since the first point in the profiler it belongs to was marked.
-	 *
-	 * @return  integer  The amount of allocated memory in B.
-	 *
-	 * @since   1.0
-	 */
-	public function getMemoryBytes();
+    /**
+     * Get the allocated amount of memory in bytes since the first point in the profiler it belongs to was marked.
+     *
+     * @return  integer  The amount of allocated memory in B.
+     *
+     * @since   1.0
+     */
+    public function getMemoryBytes();
 
-	/**
-	 * Get the allocated amount of memory in mega bytes since the first point in the profiler it belongs to was marked.
-	 *
-	 * @return  integer  The amount of allocated memory in MB.
-	 *
-	 * @since   1.0
-	 */
-	public function getMemoryMegaBytes();
+    /**
+     * Get the allocated amount of memory in mega bytes since the first point in the profiler it belongs to was marked.
+     *
+     * @return  integer  The amount of allocated memory in MB.
+     *
+     * @since   1.0
+     */
+    public function getMemoryMegaBytes();
 }
