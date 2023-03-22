@@ -87,10 +87,10 @@ class Profiler implements ProfilerInterface, \IteratorAggregate, \Countable
     /**
      * Constructor.
      *
-     * @param   string                     $name             The profiler name.
-     * @param   ProfilerRendererInterface  $renderer         The renderer.
-     * @param   ProfilePointInterface[]    $points           An array of profile points.
-     * @param   boolean                    $memoryRealUsage  True to get the real memory usage.
+     * @param   string                      $name             The profiler name.
+     * @param   ?ProfilerRendererInterface  $renderer         The renderer.
+     * @param   ProfilePointInterface[]     $points           An array of profile points.
+     * @param   boolean                     $memoryRealUsage  True to get the real memory usage.
      *
      * @since   1.0
      * @throws  \InvalidArgumentException
