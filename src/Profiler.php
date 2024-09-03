@@ -95,7 +95,7 @@ class Profiler implements ProfilerInterface, \IteratorAggregate, \Countable
      * @since   1.0
      * @throws  \InvalidArgumentException
      */
-    public function __construct($name, ProfilerRendererInterface $renderer = null, array $points = [], $memoryRealUsage = false)
+    public function __construct($name, ?ProfilerRendererInterface $renderer = null, array $points = [], $memoryRealUsage = false)
     {
         $this->name     = $name;
         $this->renderer = $renderer ?: new DefaultRenderer();

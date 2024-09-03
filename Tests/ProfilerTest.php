@@ -7,10 +7,10 @@
 
 namespace Joomla\Profiler\Tests;
 
-use Joomla\Profiler\ProfilerRendererInterface;
-use Joomla\Profiler\Renderer\DefaultRenderer;
 use Joomla\Profiler\ProfilePoint;
 use Joomla\Profiler\Profiler;
+use Joomla\Profiler\ProfilerRendererInterface;
+use Joomla\Profiler\Renderer\DefaultRenderer;
 use Joomla\Test\TestHelper;
 use PHPUnit\Framework\TestCase;
 
