@@ -1,4 +1,4 @@
-## The Profiler Package [![Build Status](https://ci.joomla.org/api/badges/joomla-framework/profiler/status.svg?ref=refs/heads/3.x-dev)](https://ci.joomla.org/joomla-framework/profiler)
+## The Profiler Package [![Build Status](https://github.com/joomla-framework/profiler/actions/workflows/ci.yml/badge.svg?branch=3.x-dev)](https://github.com/joomla-framework/profiler)
 
 [![Latest Stable Version](https://poser.pugx.org/joomla/profiler/v/stable)](https://packagist.org/packages/joomla/profiler)
 [![Total Downloads](https://poser.pugx.org/joomla/profiler/downloads)](https://packagist.org/packages/joomla/profiler)
