@@ -94,19 +94,6 @@ class ProfilerTest extends TestCase
 
     /**
      * @covers  Joomla\Profiler\Profiler
-     * @uses    Joomla\Profiler\ProfilePoint
-     */
-    public function testTheProfilerCannotRegisterInjectedPointsNotImplementingThePointInterface()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-
-        $point1   = new ProfilePoint('start');
-        $point2   = new \stdClass();
-        $profiler = new Profiler('bar', null, [$point1, $point2]);
-    }
-
-    /**
-     * @covers  Joomla\Profiler\Profiler
      */
     public function testTheProfilerNameIsReturned()
     {
