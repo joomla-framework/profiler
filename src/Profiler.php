@@ -9,6 +9,7 @@
 
 namespace Joomla\Profiler;
 
+use ArrayIterator;
 use Joomla\Profiler\Renderer\DefaultRenderer;
 
 /**
@@ -120,12 +121,6 @@ class Profiler implements ProfilerInterface, \IteratorAggregate, \Countable
     protected function setPoints(array $points)
     {
         foreach ($points as $point) {
-            if (!($point instanceof ProfilePointInterface)) {
-                throw new \InvalidArgumentException(
-                    'One of the passed points does not implement ProfilePointInterface.'
-                );
-            }
-
             if (isset($this->lookup[$point->getName()])) {
                 throw new \InvalidArgumentException(
                     sprintf(
@@ -410,7 +405,7 @@ class Profiler implements ProfilerInterface, \IteratorAggregate, \Countable
      *
      * @since   1.0
      */
-    public function getIterator()
+    public function getIterator(): ArrayIterator
     {
         return new \ArrayIterator($this->points);
     }
@@ -422,7 +417,7 @@ class Profiler implements ProfilerInterface, \IteratorAggregate, \Countable
      *
      * @since   1.0
      */
-    public function count()
+    public function count(): int
     {
         return \count($this->points);
     }
