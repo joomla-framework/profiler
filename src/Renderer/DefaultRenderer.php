@@ -32,15 +32,12 @@ class DefaultRenderer implements ProfilerRendererInterface
     {
         $render = '';
 
-        /** @var \Joomla\Profiler\ProfilePointInterface $lastPoint */
-        $lastPoint = null;
-
         $points = $profiler->getPoints();
 
-        foreach ($points as $point) {
-            $previousTime = $lastPoint ? $lastPoint->getTime() : 0.0;
-            $previousMem  = $lastPoint ? $lastPoint->getMemoryMegaBytes() : 0;
+        $previousTime = 0.0;
+        $previousMem  = 0;
 
+        foreach ($points as $point) {
             $render .= sprintf(
                 '<code>%s %.3f seconds (+%.3f); %0.2f MB (%s%0.3f) - %s</code>',
                 $profiler->getName(),
@@ -54,7 +51,11 @@ class DefaultRenderer implements ProfilerRendererInterface
 
             $render .= '<br />';
 
+            /** @var \Joomla\Profiler\ProfilePointInterface $lastPoint */
             $lastPoint = $point;
+
+            $previousTime = $lastPoint->getTime();
+            $previousMem  = $lastPoint->getMemoryMegaBytes();
         }
 
         return $render;
