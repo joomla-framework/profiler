@@ -405,7 +405,8 @@ class Profiler implements ProfilerInterface, \IteratorAggregate, \Countable
      *
      * @since   1.0
      */
-    public function getIterator(): ArrayIterator
+    #[\ReturnTypeWillChange]
+    public function getIterator()
     {
         return new \ArrayIterator($this->points);
     }
@@ -417,7 +418,8 @@ class Profiler implements ProfilerInterface, \IteratorAggregate, \Countable
      *
      * @since   1.0
      */
-    public function count(): int
+    #[\ReturnTypeWillChange]
+    public function count()
     {
         return \count($this->points);
     }
