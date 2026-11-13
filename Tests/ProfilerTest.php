@@ -12,6 +12,7 @@ use Joomla\Profiler\Profiler;
 use Joomla\Profiler\ProfilerRendererInterface;
 use Joomla\Profiler\Renderer\DefaultRenderer;
 use Joomla\Test\TestHelper;
+use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -391,5 +392,44 @@ class ProfilerTest extends TestCase
 
         $this->instance->mark('test');
         $this->instance->setStart($time, $memory);
+    }
+
+    #[TestDox('Without arguments, setStart() uses the current time and memory usage as the reference')]
+    public function testTheProfilerStartDefaultsToTheCurrentTimeAndMemory()
+    {
+        $before = microtime(true);
+
+        $this->instance->setStart();
+        $this->instance->mark('one');
+
+        $this->assertGreaterThanOrEqual($before, TestHelper::getValue($this->instance, 'startTimeStamp'));
+        $this->assertSame(0.0, $this->instance->getPoint('start')->getTime());
+        $this->assertGreaterThanOrEqual(0.0, $this->instance->getPoint('one')->getTime());
+        $this->assertLessThan(60.0, $this->instance->getPoint('one')->getTime(), 'Marks after setStart() must be relative, not epoch timestamps');
+        $this->assertLessThan(1048576, abs($this->instance->getPoint('one')->getMemoryBytes()), 'Marks after setStart() must be relative, not absolute memory usage');
+    }
+
+    #[TestDox('setStart() uses the current memory usage when only the time is given')]
+    public function testTheProfilerStartMemoryDefaultsToTheCurrentUsage()
+    {
+        $this->instance->setStart(microtime(true) - 5);
+        $this->instance->mark('one');
+
+        $this->assertGreaterThanOrEqual(5.0, $this->instance->getPoint('one')->getTime());
+        $this->assertLessThan(60.0, $this->instance->getPoint('one')->getTime());
+        $this->assertLessThan(1048576, abs($this->instance->getPoint('one')->getMemoryBytes()));
+    }
+
+    #[TestDox('Points marked after injected points are relative to the construction of the profiler')]
+    public function testTheProfilerMarksRelativePointsAfterInjectedPoints()
+    {
+        $profiler = new Profiler('test', null, [new ProfilePoint('seed', 0.5, 100)]);
+
+        $profiler->mark('two');
+
+        $this->assertSame(0.5, $profiler->getPoint('seed')->getTime());
+        $this->assertGreaterThanOrEqual(0.0, $profiler->getPoint('two')->getTime());
+        $this->assertLessThan(60.0, $profiler->getPoint('two')->getTime(), 'Marks after injected points must be relative, not epoch timestamps');
+        $this->assertLessThan(1048576, abs($profiler->getPoint('two')->getMemoryBytes()), 'Marks after injected points must be relative, not absolute memory usage');
     }
 }
