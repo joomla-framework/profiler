@@ -268,7 +268,13 @@ class ProfilerTest extends TestCase
      */
     public function testTheProfilerReturnsThePeakMemoryUse()
     {
-        $this->assertNull($this->instance->getMemoryPeakBytes());
+        $before = memory_get_peak_usage();
+
+        $this->assertGreaterThanOrEqual($before, $this->instance->getMemoryPeakBytes(), 'Before the first mark the current peak is returned');
+
+        $this->instance->mark('one');
+
+        $this->assertGreaterThanOrEqual($before, $this->instance->getMemoryPeakBytes());
     }
 
     /**
