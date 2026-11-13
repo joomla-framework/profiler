@@ -98,12 +98,17 @@ class Profiler implements ProfilerInterface, \IteratorAggregate, \Countable
      */
     public function __construct($name, ?ProfilerRendererInterface $renderer = null, array $points = [], $memoryRealUsage = false)
     {
-        $this->name     = $name;
-        $this->renderer = $renderer ?: new DefaultRenderer();
+        $this->name            = $name;
+        $this->renderer        = $renderer ?: new DefaultRenderer();
+        $this->memoryRealUsage = (bool) $memoryRealUsage;
 
         $this->setPoints($points);
 
-        $this->memoryRealUsage = (bool) $memoryRealUsage;
+        // Points marked after injected points are measured from the construction of the profiler.
+        if (!empty($this->points)) {
+            $this->startTimeStamp   = microtime(true);
+            $this->startMemoryBytes = memory_get_usage($this->memoryRealUsage);
+        }
     }
 
     /**
@@ -430,22 +435,24 @@ class Profiler implements ProfilerInterface, \IteratorAggregate, \Countable
      * This method will only add a point if no other points have been added as the ProfilePointInterface objects created before changing
      * the start point would result in inaccurate measurements.
      *
-     * @param   float    $timeStamp    Unix timestamp in microseconds when the profiler should start measuring time.
-     * @param   integer  $memoryBytes  Memory amount in bytes when the profiler should start measuring memory.
+     * @param   ?float    $timeStamp    Unix timestamp in microseconds when the profiler should start measuring time.
+     *                                  Defaults to the current time.
+     * @param   ?integer  $memoryBytes  Memory amount in bytes when the profiler should start measuring memory.
+     *                                  Defaults to the current memory usage.
      *
      * @return  ProfilerInterface  This method is chainable.
      *
      * @since   1.2.0
      * @throws  \RuntimeException
      */
-    public function setStart($timeStamp = 0.0, $memoryBytes = 0)
+    public function setStart($timeStamp = null, $memoryBytes = null)
     {
         if (!empty($this->points)) {
             throw new \RuntimeException('The start point cannot be adjusted after points are added to the profiler.');
         }
 
-        $this->startTimeStamp   = $timeStamp;
-        $this->startMemoryBytes = $memoryBytes;
+        $this->startTimeStamp   = $timeStamp ?? microtime(true);
+        $this->startMemoryBytes = $memoryBytes ?? memory_get_usage($this->memoryRealUsage);
 
         $point = new ProfilePoint('start');
 
