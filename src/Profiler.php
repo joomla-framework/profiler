@@ -70,9 +70,9 @@ class Profiler implements ProfilerInterface, \IteratorAggregate, \Countable
     protected $startMemoryBytes = 0;
 
     /**
-     * The memory peak in bytes during the profiler run.
+     * The memory peak in bytes during the profiler run, null until the first point is marked.
      *
-     * @var    integer
+     * @var    ?integer
      * @since  1.0
      */
     protected $memoryPeakBytes;
@@ -325,13 +325,15 @@ class Profiler implements ProfilerInterface, \IteratorAggregate, \Countable
     /**
      * Get the memory peak in bytes during the profiler run.
      *
+     * Before the first point is marked, the current memory peak of the script is returned.
+     *
      * @return  integer  The memory peak in bytes.
      *
      * @since   1.0
      */
     public function getMemoryPeakBytes()
     {
-        return $this->memoryPeakBytes;
+        return $this->memoryPeakBytes ?? memory_get_peak_usage($this->memoryRealUsage);
     }
 
     /**
