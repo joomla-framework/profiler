@@ -111,16 +111,22 @@ class Profiler implements ProfilerInterface, \IteratorAggregate, \Countable
      *
      * This function is called by the constructor when injecting an array of points (mostly for testing purposes).
      *
-     * @param   ProfilePointInterface[]  $points  An array of profile points.
+     * @param   array  $points  An array of profile points (ProfilePointInterface instances).
      *
      * @return  void
      *
      * @since   1.0
-     * @throws  \InvalidArgumentException
+     * @throws  \InvalidArgumentException  If an element is not a ProfilePointInterface or a point name is used twice.
      */
     protected function setPoints(array $points)
     {
         foreach ($points as $point) {
+            if (!($point instanceof ProfilePointInterface)) {
+                throw new \InvalidArgumentException(
+                    'One of the passed points does not implement ProfilePointInterface.'
+                );
+            }
+
             if (isset($this->lookup[$point->getName()])) {
                 throw new \InvalidArgumentException(
                     sprintf(
