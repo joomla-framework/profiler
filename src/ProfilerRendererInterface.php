@@ -25,5 +25,5 @@ interface ProfilerRendererInterface
      *
      * @since   1.0
      */
-    public function render(ProfilerInterface $profiler);
+    public function render(ProfilerInterface $profiler): string;
 }

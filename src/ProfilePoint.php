@@ -49,7 +49,7 @@ class ProfilePoint implements ProfilePointInterface
      *
      * @since   1.0
      */
-    public function __construct($name, $time = 0.0, $memoryBytes = 0)
+    public function __construct(string $name, float $time = 0.0, int $memoryBytes = 0)
     {
         $this->name        = $name;
         $this->time        = (float) $time;
@@ -63,7 +63,7 @@ class ProfilePoint implements ProfilePointInterface
      *
      * @since   1.0
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -75,7 +75,7 @@ class ProfilePoint implements ProfilePointInterface
      *
      * @since   1.0
      */
-    public function getTime()
+    public function getTime(): float
     {
         return $this->time;
     }
@@ -87,7 +87,7 @@ class ProfilePoint implements ProfilePointInterface
      *
      * @since   1.0
      */
-    public function getMemoryBytes()
+    public function getMemoryBytes(): int
     {
         return $this->memoryBytes;
     }
@@ -96,11 +96,11 @@ class ProfilePoint implements ProfilePointInterface
      * Get the allocated amount of memory in mega bytes
      * since the first point in the profiler it belongs to was marked.
      *
-     * @return  integer  The amount of allocated memory in MB.
+     * @return  float  The amount of allocated memory in MB.
      *
      * @since   1.0
      */
-    public function getMemoryMegaBytes()
+    public function getMemoryMegaBytes(): float
     {
         return $this->memoryBytes / 1048576;
     }

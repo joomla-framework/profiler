@@ -23,19 +23,19 @@ interface ProfilerInterface
      *
      * @since   1.0
      */
-    public function getName();
+    public function getName(): string;
 
     /**
      * Mark a profile point with the given name.
      *
      * @param   string  $name  The profile point name.
      *
-     * @return  ProfilerInterface  This method is chainable.
+     * @return  static  This method is chainable.
      *
      * @since   1.0
      * @throws  \InvalidArgumentException  If a point with that name already exists.
      */
-    public function mark($name);
+    public function mark(string $name): static;
 
     /**
      * Check if the profiler has marked the given point.
@@ -46,7 +46,7 @@ interface ProfilerInterface
      *
      * @since   1.0
      */
-    public function hasPoint($name);
+    public function hasPoint(string $name): bool;
 
     /**
      * Get the point identified by the given name.
@@ -58,7 +58,7 @@ interface ProfilerInterface
      *
      * @since   1.0
      */
-    public function getPoint($name, $default = null);
+    public function getPoint(string $name, mixed $default = null): mixed;
 
     /**
      * Get the points in this profiler (in the order they were marked).
@@ -67,18 +67,18 @@ interface ProfilerInterface
      *
      * @since   1.0
      */
-    public function getPoints();
+    public function getPoints(): array;
 
     /**
      * Set the renderer to render this profiler.
      *
      * @param   ProfilerRendererInterface  $renderer  The renderer.
      *
-     * @return  ProfilerInterface  This method is chainable.
+     * @return  static  This method is chainable.
      *
      * @since   1.0
      */
-    public function setRenderer(ProfilerRendererInterface $renderer);
+    public function setRenderer(ProfilerRendererInterface $renderer): static;
 
     /**
      * Get the currently used renderer in this profiler.
@@ -87,7 +87,7 @@ interface ProfilerInterface
      *
      * @since   1.0
      */
-    public function getRenderer();
+    public function getRenderer(): ProfilerRendererInterface;
 
     /**
      * Render the profiler.
@@ -96,5 +96,31 @@ interface ProfilerInterface
      *
      * @since   1.0
      */
-    public function render();
+    public function render(): string;
+
+    /**
+     * Get the elapsed time in seconds between the two points.
+     *
+     * @param   string  $first   The name of the first point.
+     * @param   string  $second  The name of the second point.
+     *
+     * @return  float  The elapsed time between these points in seconds (absolute value).
+     *
+     * @since   __DEPLOY_VERSION__
+     * @throws  \LogicException  If the points were not marked.
+     */
+    public function getTimeBetween(string $first, string $second): float;
+
+    /**
+     * Get the amount of allocated memory in bytes between the two points.
+     *
+     * @param   string  $first   The name of the first point.
+     * @param   string  $second  The name of the second point.
+     *
+     * @return  integer  The amount of allocated memory between these points in bytes (absolute value).
+     *
+     * @since   __DEPLOY_VERSION__
+     * @throws  \LogicException  If the points were not marked.
+     */
+    public function getMemoryBytesBetween(string $first, string $second): int;
 }
