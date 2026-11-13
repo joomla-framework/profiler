@@ -22,6 +22,8 @@ class DefaultRenderer implements ProfilerRendererInterface
     /**
      * Render the profiler.
      *
+     * The profiler and point names are HTML-escaped.
+     *
      * @param   ProfilerInterface  $profiler  The profiler to render.
      *
      * @return  string  The rendered profiler.
@@ -40,13 +42,13 @@ class DefaultRenderer implements ProfilerRendererInterface
         foreach ($points as $point) {
             $render .= sprintf(
                 '<code>%s %.3f seconds (+%.3f); %0.2f MB (%s%0.3f) - %s</code>',
-                $profiler->getName(),
+                htmlspecialchars($profiler->getName(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'),
                 $point->getTime(),
                 $point->getTime() - $previousTime,
                 $point->getMemoryMegaBytes(),
                 ($point->getMemoryMegaBytes() > $previousMem) ? '+' : '',
                 $point->getMemoryMegaBytes() - $previousMem,
-                $point->getName()
+                htmlspecialchars($point->getName(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')
             );
 
             $render .= '<br />';

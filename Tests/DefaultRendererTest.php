@@ -10,6 +10,7 @@ namespace Joomla\Profiler\Tests;
 use Joomla\Profiler\ProfilePoint;
 use Joomla\Profiler\Profiler;
 use Joomla\Profiler\Renderer\DefaultRenderer;
+use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -57,6 +58,17 @@ class DefaultRendererTest extends TestCase
         $expectedString .= '<code>test 3.000 seconds (+0.500); 1.50 MB (-0.500) - fourth</code><br />';
 
         $this->assertEquals($this->instance->render($profiler), $expectedString);
+    }
+
+    #[TestDox('The profiler and point names are HTML-escaped')]
+    public function testTheNamesAreEscaped()
+    {
+        $profiler = new Profiler('<b>"app"</b>', null, [new ProfilePoint('<img src=x onerror=alert(1)>')]);
+
+        $this->assertSame(
+            '<code>&lt;b&gt;&quot;app&quot;&lt;/b&gt; 0.000 seconds (+0.000); 0.00 MB (0.000) - &lt;img src=x onerror=alert(1)&gt;</code><br />',
+            $this->instance->render($profiler)
+        );
     }
 
     /**
