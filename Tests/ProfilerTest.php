@@ -12,6 +12,7 @@ use Joomla\Profiler\Profiler;
 use Joomla\Profiler\ProfilerRendererInterface;
 use Joomla\Profiler\Renderer\DefaultRenderer;
 use Joomla\Test\TestHelper;
+use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -90,6 +91,15 @@ class ProfilerTest extends TestCase
         $point1   = new ProfilePoint('start');
         $point2   = new ProfilePoint('start');
         $profiler = new Profiler('bar', null, [$point1, $point2]);
+    }
+
+    #[TestDox('Injected points that do not implement ProfilePointInterface are rejected')]
+    public function testTheProfilerCannotRegisterInjectedPointsOfTheWrongType()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('One of the passed points does not implement ProfilePointInterface.');
+
+        new Profiler('bar', null, [new ProfilePoint('start'), 'not a point']);
     }
 
     /**
