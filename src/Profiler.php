@@ -96,7 +96,7 @@ class Profiler implements ProfilerInterface, \IteratorAggregate, \Countable
      * @since   1.0
      * @throws  \InvalidArgumentException
      */
-    public function __construct($name, ?ProfilerRendererInterface $renderer = null, array $points = [], $memoryRealUsage = false)
+    public function __construct(string $name, ?ProfilerRendererInterface $renderer = null, array $points = [], bool $memoryRealUsage = false)
     {
         $this->name     = $name;
         $this->renderer = $renderer ?: new DefaultRenderer();
@@ -118,7 +118,7 @@ class Profiler implements ProfilerInterface, \IteratorAggregate, \Countable
      * @since   1.0
      * @throws  \InvalidArgumentException
      */
-    protected function setPoints(array $points)
+    protected function setPoints(array $points): void
     {
         foreach ($points as $point) {
             if (isset($this->lookup[$point->getName()])) {
@@ -146,7 +146,7 @@ class Profiler implements ProfilerInterface, \IteratorAggregate, \Countable
      *
      * @since   1.0
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -156,12 +156,12 @@ class Profiler implements ProfilerInterface, \IteratorAggregate, \Countable
      *
      * @param   string  $name  The profile point name.
      *
-     * @return  ProfilerInterface  This method is chainable.
+     * @return  static  This method is chainable.
      *
      * @since   1.0
      * @throws  \InvalidArgumentException  If the point already exists.
      */
-    public function mark($name)
+    public function mark(string $name): static
     {
         // If a point already exists with this name.
         if (isset($this->lookup[$name])) {
@@ -212,7 +212,7 @@ class Profiler implements ProfilerInterface, \IteratorAggregate, \Countable
      *
      * @since   1.0
      */
-    public function hasPoint($name)
+    public function hasPoint(string $name): bool
     {
         return isset($this->lookup[$name]);
     }
@@ -227,7 +227,7 @@ class Profiler implements ProfilerInterface, \IteratorAggregate, \Countable
      *
      * @since   1.0
      */
-    public function getPoint($name, $default = null)
+    public function getPoint(string $name, mixed $default = null): mixed
     {
         if (isset($this->lookup[$name])) {
             $index = $this->lookup[$name];
@@ -249,7 +249,7 @@ class Profiler implements ProfilerInterface, \IteratorAggregate, \Countable
      * @since   1.0
      * @throws  \LogicException  If the points were not marked.
      */
-    public function getTimeBetween($first, $second)
+    public function getTimeBetween(string $first, string $second): float
     {
         if (!isset($this->lookup[$first])) {
             throw new \LogicException(
@@ -291,7 +291,7 @@ class Profiler implements ProfilerInterface, \IteratorAggregate, \Countable
      * @since   1.0
      * @throws  \LogicException  If the points were not marked.
      */
-    public function getMemoryBytesBetween($first, $second)
+    public function getMemoryBytesBetween(string $first, string $second): int
     {
         if (!isset($this->lookup[$first])) {
             throw new \LogicException(
@@ -329,7 +329,7 @@ class Profiler implements ProfilerInterface, \IteratorAggregate, \Countable
      *
      * @since   1.0
      */
-    public function getMemoryPeakBytes()
+    public function getMemoryPeakBytes(): ?int
     {
         return $this->memoryPeakBytes;
     }
@@ -341,7 +341,7 @@ class Profiler implements ProfilerInterface, \IteratorAggregate, \Countable
      *
      * @since   1.0
      */
-    public function getPoints()
+    public function getPoints(): array
     {
         return $this->points;
     }
@@ -351,11 +351,11 @@ class Profiler implements ProfilerInterface, \IteratorAggregate, \Countable
      *
      * @param   ProfilerRendererInterface  $renderer  The renderer.
      *
-     * @return  Profiler  This method is chainable.
+     * @return  static  This method is chainable.
      *
      * @since   1.0
      */
-    public function setRenderer(ProfilerRendererInterface $renderer)
+    public function setRenderer(ProfilerRendererInterface $renderer): static
     {
         $this->renderer = $renderer;
 
@@ -369,7 +369,7 @@ class Profiler implements ProfilerInterface, \IteratorAggregate, \Countable
      *
      * @since   1.0
      */
-    public function getRenderer()
+    public function getRenderer(): ProfilerRendererInterface
     {
         return $this->renderer;
     }
@@ -381,7 +381,7 @@ class Profiler implements ProfilerInterface, \IteratorAggregate, \Countable
      *
      * @since   1.0
      */
-    public function render()
+    public function render(): string
     {
         return $this->renderer->render($this);
     }
@@ -393,7 +393,7 @@ class Profiler implements ProfilerInterface, \IteratorAggregate, \Countable
      *
      * @since   1.0
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->render();
     }
@@ -405,8 +405,7 @@ class Profiler implements ProfilerInterface, \IteratorAggregate, \Countable
      *
      * @since   1.0
      */
-    #[\ReturnTypeWillChange]
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->points);
     }
@@ -418,8 +417,7 @@ class Profiler implements ProfilerInterface, \IteratorAggregate, \Countable
      *
      * @since   1.0
      */
-    #[\ReturnTypeWillChange]
-    public function count()
+    public function count(): int
     {
         return \count($this->points);
     }
@@ -433,12 +431,12 @@ class Profiler implements ProfilerInterface, \IteratorAggregate, \Countable
      * @param   float    $timeStamp    Unix timestamp in microseconds when the profiler should start measuring time.
      * @param   integer  $memoryBytes  Memory amount in bytes when the profiler should start measuring memory.
      *
-     * @return  ProfilerInterface  This method is chainable.
+     * @return  static  This method is chainable.
      *
      * @since   1.2.0
      * @throws  \RuntimeException
      */
-    public function setStart($timeStamp = 0.0, $memoryBytes = 0)
+    public function setStart(float $timeStamp = 0.0, int $memoryBytes = 0): static
     {
         if (!empty($this->points)) {
             throw new \RuntimeException('The start point cannot be adjusted after points are added to the profiler.');

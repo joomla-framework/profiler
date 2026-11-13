@@ -26,7 +26,7 @@ interface ProfilePointInterface
      *
      * @since   1.0
      */
-    public function getName();
+    public function getName(): string;
 
     /**
      * Get the elapsed time in seconds since the first point in the profiler it belongs to was marked.
@@ -35,7 +35,7 @@ interface ProfilePointInterface
      *
      * @since   1.0
      */
-    public function getTime();
+    public function getTime(): float;
 
     /**
      * Get the allocated amount of memory in bytes since the first point in the profiler it belongs to was marked.
@@ -44,14 +44,14 @@ interface ProfilePointInterface
      *
      * @since   1.0
      */
-    public function getMemoryBytes();
+    public function getMemoryBytes(): int;
 
     /**
      * Get the allocated amount of memory in mega bytes since the first point in the profiler it belongs to was marked.
      *
-     * @return  integer  The amount of allocated memory in MB.
+     * @return  float  The amount of allocated memory in MB.
      *
      * @since   1.0
      */
-    public function getMemoryMegaBytes();
+    public function getMemoryMegaBytes(): float;
 }

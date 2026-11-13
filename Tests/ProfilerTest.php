@@ -9,9 +9,11 @@ namespace Joomla\Profiler\Tests;
 
 use Joomla\Profiler\ProfilePoint;
 use Joomla\Profiler\Profiler;
+use Joomla\Profiler\ProfilerInterface;
 use Joomla\Profiler\ProfilerRendererInterface;
 use Joomla\Profiler\Renderer\DefaultRenderer;
 use Joomla\Test\TestHelper;
+use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -391,5 +393,12 @@ class ProfilerTest extends TestCase
 
         $this->instance->mark('test');
         $this->instance->setStart($time, $memory);
+    }
+
+    #[TestDox('ProfilerInterface declares the methods that measure between two points')]
+    public function testTheInterfaceDeclaresTheBetweenMethods()
+    {
+        $this->assertSame('float', (string) (new \ReflectionMethod(ProfilerInterface::class, 'getTimeBetween'))->getReturnType());
+        $this->assertSame('int', (string) (new \ReflectionMethod(ProfilerInterface::class, 'getMemoryBytesBetween'))->getReturnType());
     }
 }
